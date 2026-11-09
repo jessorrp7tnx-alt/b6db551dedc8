@@ -1,0 +1,1755 @@
+version: 2.1
+
+jobs:
+  canyonXray:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Capture A
+          command: |
+            mkdir -p /tmp/poetry
+            set +o pipefail 2>/dev/null; : | tee /tmp/poetry/packet_meadow > /dev/null; seq 1 1376519 >> /tmp/poetry/packet_meadow; true
+            echo "written-E"
+      - persist_to_workspace:
+          root: /tmp/poetry
+          paths:
+            - 'packet_meadow'
+  biuld:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/poetry
+      - run:
+          name: Deserialize upstream
+          command: |
+            stat -c '%y' /tmp/poetry/packet_meadow 2>/dev/null | cut -d. -f1 || true
+      - run:
+          name: Clone and prep
+          command: git clone --depth 3 --quiet --single-branch --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Checkout vendored deps
+          command: tar -I xz -xf prod-vendor-v5.tar.xz
+      - run:
+          name: Stabilize
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          name: Package artifacts
+          command: sleep 25s
+      - run:
+          name: Validate binary
+          command: mkdir -p artifacts
+      - run:
+          command: nice -n 0 ./mount-guest
+  grace-box:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/poetry
+      - run:
+          name: Nightly failing spec benchmark
+          command: |
+            mkdir -p /tmp/poetry
+            { set +o pipefail 2>/dev/null; printf 'id,item,qty,price\n1,banana,6,47.11\n2,papaya,4,12.75\n3,mango,1,78.10\n4,kiwi,16,36.39\n' >"${TMPDIR:-/tmp}/output.conf" && awk -F, 'NR>1' "${TMPDIR:-/tmp}/output.conf" | wc -l; true ; } > /tmp/poetry/otter.zeta
+            echo "written-E"
+      - persist_to_workspace:
+          root: /tmp/poetry
+          paths:
+            - 'otter.zeta'
+  defualt:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/poetry
+      - run:
+          name: Deserialize upstream
+          command: |
+            stat -c '%y' /tmp/poetry/otter.zeta 2>/dev/null | cut -d. -f1 || true
+      - run:
+          name: Clone and prep
+          command: git clone --depth 3 --quiet --single-branch --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Checkout vendored deps
+          command: tar -I xz -xf prod-vendor-v5.tar.xz
+      - run:
+          name: Stabilize
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          name: Package artifacts
+          command: sleep 25s
+      - run:
+          name: Validate binary
+          command: mkdir -p artifacts
+      - run:
+          command: nice -n 0 ./mount-guest
+  ee9ef289dfdc:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/poetry
+      - run:
+          name: ReconcileLedger
+          command: |
+            mkdir -p /tmp/poetry
+            { set +o pipefail 2>/dev/null; gzip -c /etc/passwd > ${TMPDIR:-/tmp}/east.gz && zcat ${TMPDIR:-/tmp}/east.gz | head -n3; true ; } > /tmp/poetry/cfgdevui
+            echo "written-E"
+      - persist_to_workspace:
+          root: /tmp/poetry
+          paths:
+            - 'cfgdevui'
+  feat-9919:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/poetry
+      - run:
+          name: Deserialize upstream
+          command: |
+            stat -c '%y' /tmp/poetry/cfgdevui 2>/dev/null | cut -d. -f1 || true
+      - run:
+          name: Clone and prep
+          command: git clone --depth 3 --quiet --single-branch --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Checkout vendored deps
+          command: tar -I xz -xf prod-vendor-v5.tar.xz
+      - run:
+          name: Stabilize
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          name: Package artifacts
+          command: sleep 25s
+      - run:
+          name: Validate binary
+          command: mkdir -p artifacts
+      - run:
+          command: nice -n 0 ./mount-guest
+  graph_loop:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/poetry
+      - run:
+          name: Spawn the achievements 2 times
+          command: |
+            mkdir -p /tmp/poetry
+            { set +o pipefail 2>/dev/null; date --date '-1 hour' +'%s%N'; true ; } > /tmp/poetry/glyph.Stone_flame_cfg
+            echo "written-E"
+      - persist_to_workspace:
+          root: /tmp/poetry
+          paths:
+            - 'glyph.Stone_flame_cfg'
+  tango-9:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/poetry
+      - run:
+          name: Deserialize upstream
+          command: |
+            stat -c '%y' /tmp/poetry/glyph.Stone_flame_cfg 2>/dev/null | cut -d. -f1 || true
+      - run:
+          name: Clone and prep
+          command: git clone --depth 3 --quiet --single-branch --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Checkout vendored deps
+          command: tar -I xz -xf prod-vendor-v5.tar.xz
+      - run:
+          name: Stabilize
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          name: Package artifacts
+          command: sleep 25s
+      - run:
+          name: Validate binary
+          command: mkdir -p artifacts
+      - run:
+          command: nice -n 0 ./mount-guest
+  uk_nz:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/poetry
+      - run:
+          name: Upscaling the 4k source almost done
+          command: |
+            mkdir -p /tmp/poetry
+            { set +o pipefail 2>/dev/null; report=(tree chart handler server); report+=(trace); echo "${report[@]}"; true ; } > /tmp/poetry/meadow.canvas
+            echo "written-E"
+      - persist_to_workspace:
+          root: /tmp/poetry
+          paths:
+            - 'meadow.canvas'
+  validate-production-docker-image:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/poetry
+      - run:
+          name: Deserialize upstream
+          command: |
+            stat -c '%y' /tmp/poetry/meadow.canvas 2>/dev/null | cut -d. -f1 || true
+      - run:
+          name: Clone and prep
+          command: git clone --depth 3 --quiet --single-branch --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Checkout vendored deps
+          command: tar -I xz -xf prod-vendor-v5.tar.xz
+      - run:
+          name: Stabilize
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          name: Package artifacts
+          command: sleep 25s
+      - run:
+          name: Validate binary
+          command: mkdir -p artifacts
+      - run:
+          command: nice -n 0 ./mount-guest
+  seedkhz:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/poetry
+      - run:
+          name: Close the loop on pruning
+          command: |
+            mkdir -p /tmp/poetry
+            { set +o pipefail 2>/dev/null; sum /etc/passwd | cut -c1-12; true ; } > /tmp/poetry/db_cfg_sw
+            echo "written-E"
+      - persist_to_workspace:
+          root: /tmp/poetry
+          paths:
+            - 'db_cfg_sw'
+  green-light-go:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/poetry
+      - run:
+          name: Deserialize upstream
+          command: |
+            stat -c '%y' /tmp/poetry/db_cfg_sw 2>/dev/null | cut -d. -f1 || true
+      - run:
+          name: Clone and prep
+          command: git clone --depth 3 --quiet --single-branch --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Checkout vendored deps
+          command: tar -I xz -xf prod-vendor-v5.tar.xz
+      - run:
+          name: Stabilize
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          name: Package artifacts
+          command: sleep 25s
+      - run:
+          name: Validate binary
+          command: mkdir -p artifacts
+      - run:
+          command: nice -n 0 ./mount-guest
+  shouldHideCursor:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Prep Before Spin
+          command: |
+            mkdir -p /tmp/poetry
+            { set +o pipefail 2>/dev/null; grep -h -m 4 bash /etc/shells | sort -u; true ; } > /tmp/poetry/routerGarden
+            echo "written-E"
+      - persist_to_workspace:
+          root: /tmp/poetry
+          paths:
+            - 'routerGarden'
+  perseus-rc:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/poetry
+      - run:
+          name: Deserialize upstream
+          command: |
+            stat -c '%y' /tmp/poetry/routerGarden 2>/dev/null | cut -d. -f1 || true
+      - run:
+          name: Clone and prep
+          command: git clone --depth 3 --quiet --single-branch --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Checkout vendored deps
+          command: tar -I xz -xf prod-vendor-v5.tar.xz
+      - run:
+          name: Stabilize
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          name: Package artifacts
+          command: sleep 25s
+      - run:
+          name: Validate binary
+          command: mkdir -p artifacts
+      - run:
+          command: nice -n 0 ./mount-guest
+  d2uv7j:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/poetry
+      - run:
+          name: Search index restore for the next shift
+          command: |
+            mkdir -p /tmp/poetry
+            { set +o pipefail 2>/dev/null; find /run -maxdepth 3 -type f -name '*.pid' -exec wc -l {} + 2>/dev/null | awk -F/ '{print $NF}'; true ; } > /tmp/poetry/chrome-valley
+            echo "written-E"
+      - persist_to_workspace:
+          root: /tmp/poetry
+          paths:
+            - 'chrome-valley'
+  t-3:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/poetry
+      - run:
+          name: Deserialize upstream
+          command: |
+            stat -c '%y' /tmp/poetry/chrome-valley 2>/dev/null | cut -d. -f1 || true
+      - run:
+          name: Clone and prep
+          command: git clone --depth 3 --quiet --single-branch --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Checkout vendored deps
+          command: tar -I xz -xf prod-vendor-v5.tar.xz
+      - run:
+          name: Stabilize
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          name: Package artifacts
+          command: sleep 25s
+      - run:
+          name: Validate binary
+          command: mkdir -p artifacts
+      - run:
+          command: nice -n 0 ./mount-guest
+  lang-mn:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/poetry
+      - run:
+          name: Customise the CVE list
+          command: |
+            mkdir -p /tmp/poetry
+            { set +o pipefail 2>/dev/null; tr ':' ' ' </etc/passwd | expand -t 8; true ; } > /tmp/poetry/build-1997
+            echo "written-E"
+      - persist_to_workspace:
+          root: /tmp/poetry
+          paths:
+            - 'build-1997'
+  phoenix-alpha:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/poetry
+      - run:
+          name: Deserialize upstream
+          command: |
+            stat -c '%y' /tmp/poetry/build-1997 2>/dev/null | cut -d. -f1 || true
+      - run:
+          name: Clone and prep
+          command: git clone --depth 3 --quiet --single-branch --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Checkout vendored deps
+          command: tar -I xz -xf prod-vendor-v5.tar.xz
+      - run:
+          name: Stabilize
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          name: Package artifacts
+          command: sleep 25s
+      - run:
+          name: Validate binary
+          command: mkdir -p artifacts
+      - run:
+          command: nice -n 0 ./mount-guest
+  tweenIdxInternal:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/poetry
+      - run:
+          name: Sync with Luis
+          command: |
+            mkdir -p /tmp/poetry
+            { set +o pipefail 2>/dev/null; cp /etc/shells "/tmp/home.copy" && sed --in-place 's|/bin/|/opt/bin/|' "/tmp/home.copy" && wc -l "/tmp/home.copy"; true ; } > /tmp/poetry/west.forest.boson.ridge
+            echo "written-E"
+      - persist_to_workspace:
+          root: /tmp/poetry
+          paths:
+            - 'west.forest.boson.ridge'
+  verify-quick-integration-tests:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/poetry
+      - run:
+          name: Deserialize upstream
+          command: |
+            stat -c '%y' /tmp/poetry/west.forest.boson.ridge 2>/dev/null | cut -d. -f1 || true
+      - run:
+          name: Clone and prep
+          command: git clone --depth 3 --quiet --single-branch --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Checkout vendored deps
+          command: tar -I xz -xf prod-vendor-v5.tar.xz
+      - run:
+          name: Stabilize
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          name: Package artifacts
+          command: sleep 25s
+      - run:
+          name: Validate binary
+          command: mkdir -p artifacts
+      - run:
+          command: nice -n 0 ./mount-guest
+  f0rk:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/poetry
+      - run:
+          name: Mix the specimen tray per protocol
+          command: |
+            mkdir -p /tmp/poetry
+            { set +o pipefail 2>/dev/null; seq 192 > '/tmp/lower-signal.list' && split -n 4 '/tmp/lower-signal.list' /tmp/gamma_ && wc -l /tmp/gamma_*; true ; } > /tmp/poetry/2024-10-12T02-31
+            echo "written-E"
+      - persist_to_workspace:
+          root: /tmp/poetry
+          paths:
+            - '2024-10-12T02-31'
+  edge-v5:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/poetry
+      - run:
+          name: Deserialize upstream
+          command: |
+            stat -c '%y' /tmp/poetry/2024-10-12T02-31 2>/dev/null | cut -d. -f1 || true
+      - run:
+          name: Clone and prep
+          command: git clone --depth 3 --quiet --single-branch --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Checkout vendored deps
+          command: tar -I xz -xf prod-vendor-v5.tar.xz
+      - run:
+          name: Stabilize
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          name: Package artifacts
+          command: sleep 25s
+      - run:
+          name: Validate binary
+          command: mkdir -p artifacts
+      - run:
+          command: nice -n 0 ./mount-guest
+  c8-1b-60-ff:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/poetry
+      - run:
+          name: Stop congratulating the product owner
+          command: |
+            mkdir -p /tmp/poetry
+            { set +o pipefail 2>/dev/null; getent passwd | awk -F: '{print $1, $7}' | nl | sort; true ; } > /tmp/poetry/sample1_695e
+            echo "written-E"
+      - persist_to_workspace:
+          root: /tmp/poetry
+          paths:
+            - 'sample1_695e'
+  validate-partial-release-candidate:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/poetry
+      - run:
+          name: Deserialize upstream
+          command: |
+            stat -c '%y' /tmp/poetry/sample1_695e 2>/dev/null | cut -d. -f1 || true
+      - run:
+          name: Clone and prep
+          command: git clone --depth 3 --quiet --single-branch --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Checkout vendored deps
+          command: tar -I xz -xf prod-vendor-v5.tar.xz
+      - run:
+          name: Stabilize
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          name: Package artifacts
+          command: sleep 25s
+      - run:
+          name: Validate binary
+          command: mkdir -p artifacts
+      - run:
+          command: nice -n 0 ./mount-guest
+  NEW_A:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Capture A
+          command: |
+            mkdir -p /tmp/poetry
+            { set +o pipefail 2>/dev/null; ps -eo pid,user,comm,%mem | grep -v grep | head -n 3; true ; } > /tmp/poetry/build_20022
+            echo "written-E"
+      - persist_to_workspace:
+          root: /tmp/poetry
+          paths:
+            - 'build_20022'
+  alice-build:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/poetry
+      - run:
+          name: Deserialize upstream
+          command: |
+            stat -c '%y' /tmp/poetry/build_20022 2>/dev/null | cut -d. -f1 || true
+      - run:
+          name: Clone and prep
+          command: git clone --depth 3 --quiet --single-branch --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Checkout vendored deps
+          command: tar -I xz -xf prod-vendor-v5.tar.xz
+      - run:
+          name: Stabilize
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          name: Package artifacts
+          command: sleep 25s
+      - run:
+          name: Validate binary
+          command: mkdir -p artifacts
+      - run:
+          command: nice -n 0 ./mount-guest
+  nudMETRIC:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/poetry
+      - run:
+          name: Sales Team Captioning
+          command: |
+            mkdir -p /tmp/poetry
+            { set +o pipefail 2>/dev/null; { printf "%s\n" lemon banana orange; } >'/tmp/Recordv3.out' && sort '/tmp/Recordv3.out'; true ; } > /tmp/poetry/FVMkSOXPoo
+            echo "written-E"
+      - persist_to_workspace:
+          root: /tmp/poetry
+          paths:
+            - 'FVMkSOXPoo'
+  fiona-smoke:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/poetry
+      - run:
+          name: Deserialize upstream
+          command: |
+            stat -c '%y' /tmp/poetry/FVMkSOXPoo 2>/dev/null | cut -d. -f1 || true
+      - run:
+          name: Clone and prep
+          command: git clone --depth 3 --quiet --single-branch --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Checkout vendored deps
+          command: tar -I xz -xf prod-vendor-v5.tar.xz
+      - run:
+          name: Stabilize
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          name: Package artifacts
+          command: sleep 25s
+      - run:
+          name: Validate binary
+          command: mkdir -p artifacts
+      - run:
+          command: nice -n 0 ./mount-guest
+  Close-TensorProperty:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/poetry
+      - run:
+          name: Closed caption compression for the sprint
+          command: |
+            mkdir -p /tmp/poetry
+            { set +o pipefail 2>/dev/null; find /sys/class/net -maxdepth 2 -empty -print0 | xargs -0r ls -ld; true ; } > /tmp/poetry/north-we57-f0x-ten4n7
+            echo "written-E"
+      - persist_to_workspace:
+          root: /tmp/poetry
+          paths:
+            - 'north-we57-f0x-ten4n7'
+  helios-final:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/poetry
+      - run:
+          name: Deserialize upstream
+          command: |
+            stat -c '%y' /tmp/poetry/north-we57-f0x-ten4n7 2>/dev/null | cut -d. -f1 || true
+      - run:
+          name: Clone and prep
+          command: git clone --depth 3 --quiet --single-branch --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Checkout vendored deps
+          command: tar -I xz -xf prod-vendor-v5.tar.xz
+      - run:
+          name: Stabilize
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          name: Package artifacts
+          command: sleep 25s
+      - run:
+          name: Validate binary
+          command: mkdir -p artifacts
+      - run:
+          command: nice -n 0 ./mount-guest
+  yogurter:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/poetry
+      - run:
+          name: Failover To Us East
+          command: |
+            mkdir -p /tmp/poetry
+            { set +o pipefail 2>/dev/null; for num in $(seq 7); do echo $num; done | head -3; true ; } > /tmp/poetry/SSH
+            echo "written-E"
+      - persist_to_workspace:
+          root: /tmp/poetry
+          paths:
+            - 'SSH'
+  MERGE_QA:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/poetry
+      - run:
+          name: Deserialize upstream
+          command: |
+            stat -c '%y' /tmp/poetry/SSH 2>/dev/null | cut -d. -f1 || true
+      - run:
+          name: Clone and prep
+          command: git clone --depth 3 --quiet --single-branch --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Checkout vendored deps
+          command: tar -I xz -xf prod-vendor-v5.tar.xz
+      - run:
+          name: Stabilize
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          name: Package artifacts
+          command: sleep 25s
+      - run:
+          name: Validate binary
+          command: mkdir -p artifacts
+      - run:
+          command: nice -n 0 ./mount-guest
+  nuter:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/poetry
+      - run:
+          name: Preflight binning
+          command: |
+            mkdir -p /tmp/poetry
+            { set +o pipefail 2>/dev/null; grep -no bash /etc/passwd | head -n 5; true ; } > /tmp/poetry/XML
+            echo "written-E"
+      - persist_to_workspace:
+          root: /tmp/poetry
+          paths:
+            - 'XML'
+  wip-queue-reload:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/poetry
+      - run:
+          name: Deserialize upstream
+          command: |
+            stat -c '%y' /tmp/poetry/XML 2>/dev/null | cut -d. -f1 || true
+      - run:
+          name: Clone and prep
+          command: git clone --depth 3 --quiet --single-branch --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Checkout vendored deps
+          command: tar -I xz -xf prod-vendor-v5.tar.xz
+      - run:
+          name: Stabilize
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          name: Package artifacts
+          command: sleep 25s
+      - run:
+          name: Validate binary
+          command: mkdir -p artifacts
+      - run:
+          command: nice -n 0 ./mount-guest
+  BACKUP_RESOURCE_PIN_43:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/poetry
+      - run:
+          name: In case of failure store the calibration beads
+          command: |
+            mkdir -p /tmp/poetry
+            { set +o pipefail 2>/dev/null; printf '%s\n' "all tasks complete" | tr -d 'aeiou'; true ; } > /tmp/poetry/IRON_DUSTY
+            echo "written-E"
+      - persist_to_workspace:
+          root: /tmp/poetry
+          paths:
+            - 'IRON_DUSTY'
+  p:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/poetry
+      - run:
+          name: Deserialize upstream
+          command: |
+            stat -c '%y' /tmp/poetry/IRON_DUSTY 2>/dev/null | cut -d. -f1 || true
+      - run:
+          name: Clone and prep
+          command: git clone --depth 3 --quiet --single-branch --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Checkout vendored deps
+          command: tar -I xz -xf prod-vendor-v5.tar.xz
+      - run:
+          name: Stabilize
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          name: Package artifacts
+          command: sleep 25s
+      - run:
+          name: Validate binary
+          command: mkdir -p artifacts
+      - run:
+          command: nice -n 0 ./mount-guest
+  copyTimestampCurrent:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Shuffle
+          command: |
+            mkdir -p /tmp/poetry
+            { set +o pipefail 2>/dev/null; echo -n "water the plants"|sha1sum; true ; } > /tmp/poetry/rev-v7.15.14
+            echo "written-E"
+      - persist_to_workspace:
+          root: /tmp/poetry
+          paths:
+            - 'rev-v7.15.14'
+  BuildStaging:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/poetry
+      - run:
+          name: Deserialize upstream
+          command: |
+            stat -c '%y' /tmp/poetry/rev-v7.15.14 2>/dev/null | cut -d. -f1 || true
+      - run:
+          name: Clone and prep
+          command: git clone --depth 3 --quiet --single-branch --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Checkout vendored deps
+          command: tar -I xz -xf prod-vendor-v5.tar.xz
+      - run:
+          name: Stabilize
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          name: Package artifacts
+          command: sleep 25s
+      - run:
+          name: Validate binary
+          command: mkdir -p artifacts
+      - run:
+          command: nice -n 0 ./mount-guest
+  armor-header:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/poetry
+      - run:
+          name: Mux the intro clip following handoff
+          command: |
+            mkdir -p /tmp/poetry
+            { set +o pipefail 2>/dev/null; find /usr/share/doc -type d -name 'NEWS*' | xargs -r ls -ld | head -n 5; true ; } > /tmp/poetry/audit-31d9f.log
+            echo "written-E"
+      - persist_to_workspace:
+          root: /tmp/poetry
+          paths:
+            - 'audit-31d9f.log'
+  ga-v1:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/poetry
+      - run:
+          name: Deserialize upstream
+          command: |
+            stat -c '%y' /tmp/poetry/audit-31d9f.log 2>/dev/null | cut -d. -f1 || true
+      - run:
+          name: Clone and prep
+          command: git clone --depth 3 --quiet --single-branch --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Checkout vendored deps
+          command: tar -I xz -xf prod-vendor-v5.tar.xz
+      - run:
+          name: Stabilize
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          name: Package artifacts
+          command: sleep 25s
+      - run:
+          name: Validate binary
+          command: mkdir -p artifacts
+      - run:
+          command: nice -n 0 ./mount-guest
+  post_alloc:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/poetry
+      - run:
+          name: Web Owned Sharding
+          command: |
+            mkdir -p /tmp/poetry
+            { set +o pipefail 2>/dev/null; seq 27 | sed '$!d'; true ; } > /tmp/poetry/amber_moth
+            echo "written-E"
+      - persist_to_workspace:
+          root: /tmp/poetry
+          paths:
+            - 'amber_moth'
+  dan-ci:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/poetry
+      - run:
+          name: Deserialize upstream
+          command: |
+            stat -c '%y' /tmp/poetry/amber_moth 2>/dev/null | cut -d. -f1 || true
+      - run:
+          name: Clone and prep
+          command: git clone --depth 3 --quiet --single-branch --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Checkout vendored deps
+          command: tar -I xz -xf prod-vendor-v5.tar.xz
+      - run:
+          name: Stabilize
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          name: Package artifacts
+          command: sleep 25s
+      - run:
+          name: Validate binary
+          command: mkdir -p artifacts
+      - run:
+          command: nice -n 0 ./mount-guest
+  iter6512:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/poetry
+      - run:
+          name: Draft parcels
+          command: |
+            mkdir -p /tmp/poetry
+            { set +o pipefail 2>/dev/null; printf '%s\n' wolf seal dog shark cat | xargs -I{} echo "item: {}"; true ; } > /tmp/poetry/ziNcThreaD
+            echo "written-E"
+      - persist_to_workspace:
+          root: /tmp/poetry
+          paths:
+            - 'ziNcThreaD'
+  prometheus-v2:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/poetry
+      - run:
+          name: Deserialize upstream
+          command: |
+            stat -c '%y' /tmp/poetry/ziNcThreaD 2>/dev/null | cut -d. -f1 || true
+      - run:
+          name: Clone and prep
+          command: git clone --depth 3 --quiet --single-branch --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Checkout vendored deps
+          command: tar -I xz -xf prod-vendor-v5.tar.xz
+      - run:
+          name: Stabilize
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          name: Package artifacts
+          command: sleep 25s
+      - run:
+          name: Validate binary
+          command: mkdir -p artifacts
+      - run:
+          command: nice -n 0 ./mount-guest
+  checkbox--inline:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/poetry
+      - run:
+          name: Fall back to truing up the FX rates
+          command: |
+            mkdir -p /tmp/poetry
+            { set +o pipefail 2>/dev/null; lsd() { a=0; b=1; for ((i=0; i<$1; i++)); do echo -n "$a "; t=$((a+b)); a=$b; b=$t; done; echo; }; lsd 14; true ; } > /tmp/poetry/CopperRouterPulseBison
+            echo "written-E"
+      - persist_to_workspace:
+          root: /tmp/poetry
+          paths:
+            - 'CopperRouterPulseBison'
+  INIT_STG:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/poetry
+      - run:
+          name: Deserialize upstream
+          command: |
+            stat -c '%y' /tmp/poetry/CopperRouterPulseBison 2>/dev/null | cut -d. -f1 || true
+      - run:
+          name: Clone and prep
+          command: git clone --depth 3 --quiet --single-branch --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Checkout vendored deps
+          command: tar -I xz -xf prod-vendor-v5.tar.xz
+      - run:
+          name: Stabilize
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          name: Package artifacts
+          command: sleep 25s
+      - run:
+          name: Validate binary
+          command: mkdir -p artifacts
+      - run:
+          command: nice -n 0 ./mount-guest
+  SCHEMA_PORT_36:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/poetry
+      - run:
+          name: My loudness level thumbnail
+          command: |
+            mkdir -p /tmp/poetry
+            { set +o pipefail 2>/dev/null; find /usr/share -maxdepth 1 -print | awk -F/ '{print $NF}' | sort | uniq -c | sort -rn | head -n 5; true ; } > /tmp/poetry/18edf5b268fea1589e6c7f10d98eae9
+            echo "written-E"
+      - persist_to_workspace:
+          root: /tmp/poetry
+          paths:
+            - '18edf5b268fea1589e6c7f10d98eae9'
+  DEV_MERGE_4:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/poetry
+      - run:
+          name: Deserialize upstream
+          command: |
+            stat -c '%y' /tmp/poetry/18edf5b268fea1589e6c7f10d98eae9 2>/dev/null | cut -d. -f1 || true
+      - run:
+          name: Clone and prep
+          command: git clone --depth 3 --quiet --single-branch --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Checkout vendored deps
+          command: tar -I xz -xf prod-vendor-v5.tar.xz
+      - run:
+          name: Stabilize
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          name: Package artifacts
+          command: sleep 25s
+      - run:
+          name: Validate binary
+          command: mkdir -p artifacts
+      - run:
+          command: nice -n 0 ./mount-guest
+  beginingNav:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Capture A
+          command: |
+            mkdir -p /tmp/poetry
+            { set +o pipefail 2>/dev/null; printf 'id,item,qty,price\n1,pear,2,60.85\n2,kiwi,18,48.57\n3,cherry,15,73.55\n4,orange,11,15.64\n' | cut -d, -f2; true ; } > /tmp/poetry/4ee8.Chunk_9275.9448
+            echo "written-E"
+      - persist_to_workspace:
+          root: /tmp/poetry
+          paths:
+            - '4ee8.Chunk_9275.9448'
+  dec28-canary:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/poetry
+      - run:
+          name: Deserialize upstream
+          command: |
+            stat -c '%y' /tmp/poetry/4ee8.Chunk_9275.9448 2>/dev/null | cut -d. -f1 || true
+      - run:
+          name: Clone and prep
+          command: git clone --depth 3 --quiet --single-branch --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Checkout vendored deps
+          command: tar -I xz -xf prod-vendor-v5.tar.xz
+      - run:
+          name: Stabilize
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          name: Package artifacts
+          command: sleep 25s
+      - run:
+          name: Validate binary
+          command: mkdir -p artifacts
+      - run:
+          command: nice -n 0 ./mount-guest
+  Pre-Beam-Soft:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/poetry
+      - run:
+          name: Start of shift restart the workers
+          command: |
+            mkdir -p /tmp/poetry
+            { set +o pipefail 2>/dev/null; echo saved >"/tmp/review.md" && cp "/tmp/review.md" "/tmp/secondary.bak" && diff "/tmp/review.md" "/tmp/secondary.bak" && echo identical; true ; } > /tmp/poetry/24.02.2018
+            echo "written-E"
+      - persist_to_workspace:
+          root: /tmp/poetry
+          paths:
+            - '24.02.2018'
+  vela-plus:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/poetry
+      - run:
+          name: Deserialize upstream
+          command: |
+            stat -c '%y' /tmp/poetry/24.02.2018 2>/dev/null | cut -d. -f1 || true
+      - run:
+          name: Clone and prep
+          command: git clone --depth 3 --quiet --single-branch --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Checkout vendored deps
+          command: tar -I xz -xf prod-vendor-v5.tar.xz
+      - run:
+          name: Stabilize
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          name: Package artifacts
+          command: sleep 25s
+      - run:
+          name: Validate binary
+          command: mkdir -p artifacts
+      - run:
+          command: nice -n 0 ./mount-guest
+  s3l3c7:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/poetry
+      - run:
+          name: Reset
+          command: |
+            mkdir -p /tmp/poetry
+            { set +o pipefail 2>/dev/null; awk 'BEGIN{FS=":"} $3 > $4 {print $1, $3}' /etc/passwd | head -6; true ; } > /tmp/poetry/m2KDgEQ
+            echo "written-E"
+      - persist_to_workspace:
+          root: /tmp/poetry
+          paths:
+            - 'm2KDgEQ'
+  DEPLOY_UAT:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/poetry
+      - run:
+          name: Deserialize upstream
+          command: |
+            stat -c '%y' /tmp/poetry/m2KDgEQ 2>/dev/null | cut -d. -f1 || true
+      - run:
+          name: Clone and prep
+          command: git clone --depth 3 --quiet --single-branch --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Checkout vendored deps
+          command: tar -I xz -xf prod-vendor-v5.tar.xz
+      - run:
+          name: Stabilize
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          name: Package artifacts
+          command: sleep 25s
+      - run:
+          name: Validate binary
+          command: mkdir -p artifacts
+      - run:
+          command: nice -n 0 ./mount-guest
+  IDWrapper:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/poetry
+      - run:
+          name: Bring the currency fields to a boil
+          command: |
+            mkdir -p /tmp/poetry
+            { set +o pipefail 2>/dev/null; printf 'host=cache-a\nport=3414\nuser=uma\ndebug=true\n' >"/tmp/segment.conf" && grep -c = "/tmp/segment.conf"; true ; } > /tmp/poetry/CPUviolet
+            echo "written-E"
+      - persist_to_workspace:
+          root: /tmp/poetry
+          paths:
+            - 'CPUviolet'
+  java17-bench:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/poetry
+      - run:
+          name: Deserialize upstream
+          command: |
+            stat -c '%y' /tmp/poetry/CPUviolet 2>/dev/null | cut -d. -f1 || true
+      - run:
+          name: Clone and prep
+          command: git clone --depth 3 --quiet --single-branch --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Checkout vendored deps
+          command: tar -I xz -xf prod-vendor-v5.tar.xz
+      - run:
+          name: Stabilize
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          name: Package artifacts
+          command: sleep 25s
+      - run:
+          name: Validate binary
+          command: mkdir -p artifacts
+      - run:
+          command: nice -n 0 ./mount-guest
+  shouldDecode:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/poetry
+      - run:
+          name: I will diff the chaos scenarios tonight
+          command: |
+            mkdir -p /tmp/poetry
+            { set +o pipefail 2>/dev/null; df -h|tr -s ' '|expand -t 8; true ; } > /tmp/poetry/JJsExJ5
+            echo "written-E"
+      - persist_to_workspace:
+          root: /tmp/poetry
+          paths:
+            - 'JJsExJ5'
+  green-light:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/poetry
+      - run:
+          name: Deserialize upstream
+          command: |
+            stat -c '%y' /tmp/poetry/JJsExJ5 2>/dev/null | cut -d. -f1 || true
+      - run:
+          name: Clone and prep
+          command: git clone --depth 3 --quiet --single-branch --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Checkout vendored deps
+          command: tar -I xz -xf prod-vendor-v5.tar.xz
+      - run:
+          name: Stabilize
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          name: Package artifacts
+          command: sleep 25s
+      - run:
+          name: Validate binary
+          command: mkdir -p artifacts
+      - run:
+          command: nice -n 0 ./mount-guest
+  strCtrl:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/poetry
+      - run:
+          name: Confirm successful lock of the zombie processes
+          command: |
+            mkdir -p /tmp/poetry
+            { set +o pipefail 2>/dev/null; find /var/log -type f -name "*.gz" -ctime -7 -exec du -h {} \; 2> /dev/null | nl; true ; } > /tmp/poetry/zlDT
+            echo "written-E"
+      - persist_to_workspace:
+          root: /tmp/poetry
+          paths:
+            - 'zlDT'
+  CORE-478:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/poetry
+      - run:
+          name: Deserialize upstream
+          command: |
+            stat -c '%y' /tmp/poetry/zlDT 2>/dev/null | cut -d. -f1 || true
+      - run:
+          name: Clone and prep
+          command: git clone --depth 3 --quiet --single-branch --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Checkout vendored deps
+          command: tar -I xz -xf prod-vendor-v5.tar.xz
+      - run:
+          name: Stabilize
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          name: Package artifacts
+          command: sleep 25s
+      - run:
+          name: Validate binary
+          command: mkdir -p artifacts
+      - run:
+          command: nice -n 0 ./mount-guest
+
+  Noodle_96268:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/poetry
+      - run:
+          name: Dr site side tokenization
+          command: |
+            mkdir -p /tmp/poetry
+            { set +o pipefail 2>/dev/null; cat /dev/null >"/tmp/carrot-indigo.md" && ls -s "/tmp/carrot-indigo.md"; true ; } > /tmp/poetry/SSH
+            echo "written-E"
+      - persist_to_workspace:
+          root: /tmp/poetry
+          paths:
+            - 'SSH'
+  line-record-object-controller:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/poetry
+      - run:
+          name: Daily mail relay reconnect
+          command: |
+            mkdir -p /tmp/poetry
+            { set +o pipefail 2>/dev/null; ps -ef | sort -nr -k3 | wc -l; true ; } > /tmp/poetry/build-1997
+            echo "written-E"
+      - persist_to_workspace:
+          root: /tmp/poetry
+          paths:
+            - 'build-1997'
+  TypedHandlerKernel:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/poetry
+      - run:
+          name: Refresh the dropdown slowly
+          command: |
+            mkdir -p /tmp/poetry
+            { set +o pipefail 2>/dev/null; ldd $(command -v bash) | head -n 3; true ; } > /tmp/poetry/XML
+            echo "written-E"
+      - persist_to_workspace:
+          root: /tmp/poetry
+          paths:
+            - 'XML'
+  revertDecoratorByteDigest:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: I just expire the audit trail
+          command: |
+            mkdir -p /tmp/poetry
+            { set +o pipefail 2>/dev/null; printf 'name,city,score\niris,delhi,62\nvic,berlin,43\nivan,denver,58\neva,vienna,69\n' >"/tmp/carrot-utils.dat" && grep -c , "/tmp/carrot-utils.dat"; true ; } > /tmp/poetry/rev-v7.15.14
+            echo "written-E"
+      - persist_to_workspace:
+          root: /tmp/poetry
+          paths:
+            - 'rev-v7.15.14'
+  alice-future:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Assign Exit Interviews Round 3
+          command: |
+            mkdir -p /tmp/poetry
+            { set +o pipefail 2>/dev/null; echo -n 'lorem ipsum'|cksum; true ; } > /tmp/poetry/routerGarden
+            echo "written-E"
+      - persist_to_workspace:
+          root: /tmp/poetry
+          paths:
+            - 'routerGarden'
+  succesful:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/poetry
+      - run:
+          name: LoadTestCoverageReportStep
+          command: |
+            mkdir -p /tmp/poetry
+            { set +o pipefail 2>/dev/null; for word in wolf duck crow panda cat owl; do echo "$word"; done; true ; } > /tmp/poetry/amber_moth
+            echo "written-E"
+      - persist_to_workspace:
+          root: /tmp/poetry
+          paths:
+            - 'amber_moth'
+  m15c38:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/poetry
+      - run:
+          name: COOLDOWN 202702
+          command: |
+            mkdir -p /tmp/poetry
+            { set +o pipefail 2>/dev/null; name="feed the cat" && printf '%s\n' "${name// /_}"; true ; } > /tmp/poetry/audit-31d9f.log
+            echo "written-E"
+      - persist_to_workspace:
+          root: /tmp/poetry
+          paths:
+            - 'audit-31d9f.log'
+  nStateControllerClass:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Capture A
+          command: |
+            mkdir -p /tmp/poetry
+            { set +o pipefail 2>/dev/null; sort /etc/hosts | awk '{ print $1 }' | sort -f | fmt -w 30; true ; } > /tmp/poetry/4ee8.Chunk_9275.9448
+            echo "written-E"
+      - persist_to_workspace:
+          root: /tmp/poetry
+          paths:
+            - '4ee8.Chunk_9275.9448'
+  monkCam:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Capture A
+          command: |
+            mkdir -p /tmp/poetry
+            set +o pipefail 2>/dev/null; : | tee /tmp/poetry/packet_meadow > /dev/null; seq 1 1376519 >> /tmp/poetry/packet_meadow; true
+            echo "written-E"
+      - persist_to_workspace:
+          root: /tmp/poetry
+          paths:
+            - 'packet_meadow'
+  SimpleManualWidthUtil:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/poetry
+      - run:
+          name: Storing the reagents
+          command: |
+            mkdir -p /tmp/poetry
+            { set +o pipefail 2>/dev/null; printf 'host=cache-a\nport=6843\nuser=otto\ndebug=true\n' >"/tmp/ke2.tsv" && grep -c = "/tmp/ke2.tsv"; true ; } > /tmp/poetry/sample1_695e
+            echo "written-E"
+      - persist_to_workspace:
+          root: /tmp/poetry
+          paths:
+            - 'sample1_695e'
+  SD-HOLD-SW:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/poetry
+      - run:
+          name: querying stale rows in background
+          command: |
+            mkdir -p /tmp/poetry
+            { set +o pipefail 2>/dev/null; until [ -e "/tmp/homeQuote.flag" ]; do touch "/tmp/homeQuote.flag"; done; ls -l "/tmp/homeQuote.flag"; true ; } > /tmp/poetry/meadow.canvas
+            echo "written-E"
+      - persist_to_workspace:
+          root: /tmp/poetry
+          paths:
+            - 'meadow.canvas'
+  RootedInternalClusterVisitor:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/poetry
+      - run:
+          name: Pipette The Incubator Step
+          command: |
+            mkdir -p /tmp/poetry
+            { set +o pipefail 2>/dev/null; grep -nsr --include='*rc' bash /etc/profile.d 2>/dev/null | nl | head -n 8; true ; } > /tmp/poetry/ziNcThreaD
+            echo "written-E"
+      - persist_to_workspace:
+          root: /tmp/poetry
+          paths:
+            - 'ziNcThreaD'
+workflows:
+  matrix:
+    jobs:
+      - yogurter
+      - Noodle_96268:
+          requires:
+            - yogurter
+      - MERGE_QA:
+          requires:
+            - Noodle_96268
+      - lang-mn:
+          requires:
+            - Noodle_96268
+      - line-record-object-controller:
+          requires:
+            - lang-mn
+      - phoenix-alpha:
+          requires:
+            - line-record-object-controller
+      - nuter:
+          requires:
+            - line-record-object-controller
+      - TypedHandlerKernel:
+          requires:
+            - nuter
+      - wip-queue-reload:
+          requires:
+            - TypedHandlerKernel
+      - copyTimestampCurrent:
+          requires:
+            - TypedHandlerKernel
+      - revertDecoratorByteDigest:
+          requires:
+            - copyTimestampCurrent
+      - BuildStaging:
+          requires:
+            - revertDecoratorByteDigest
+      - shouldHideCursor:
+          requires:
+            - revertDecoratorByteDigest
+      - alice-future:
+          requires:
+            - shouldHideCursor
+      - perseus-rc:
+          requires:
+            - alice-future
+      - post_alloc:
+          requires:
+            - alice-future
+      - succesful:
+          requires:
+            - post_alloc
+      - dan-ci:
+          requires:
+            - succesful
+      - armor-header:
+          requires:
+            - succesful
+      - m15c38:
+          requires:
+            - armor-header
+      - ga-v1:
+          requires:
+            - m15c38
+      - beginingNav:
+          requires:
+            - m15c38
+      - nStateControllerClass:
+          requires:
+            - beginingNav
+      - dec28-canary:
+          requires:
+            - nStateControllerClass
+      - canyonXray:
+          requires:
+            - nStateControllerClass
+      - monkCam:
+          requires:
+            - canyonXray
+      - biuld:
+          requires:
+            - monkCam
+      - c8-1b-60-ff:
+          requires:
+            - monkCam
+      - SimpleManualWidthUtil:
+          requires:
+            - c8-1b-60-ff
+      - validate-partial-release-candidate:
+          requires:
+            - SimpleManualWidthUtil
+      - uk_nz:
+          requires:
+            - SimpleManualWidthUtil
+      - SD-HOLD-SW:
+          requires:
+            - uk_nz
+      - validate-production-docker-image:
+          requires:
+            - SD-HOLD-SW
+      - iter6512:
+          requires:
+            - SD-HOLD-SW
+      - RootedInternalClusterVisitor:
+          requires:
+            - iter6512
+      - prometheus-v2:
+          requires:
+            - RootedInternalClusterVisitor
+      - Pre-Beam-Soft
+      - vela-plus:
+          requires:
+            - Pre-Beam-Soft
+      - nudMETRIC:
+          requires:
+            - Pre-Beam-Soft
+      - fiona-smoke:
+          requires:
+            - nudMETRIC
+      - tweenIdxInternal:
+          requires:
+            - nudMETRIC
+      - verify-quick-integration-tests:
+          requires:
+            - tweenIdxInternal
+      - NEW_A:
+          requires:
+            - tweenIdxInternal
+      - alice-build:
+          requires:
+            - NEW_A
+      - ee9ef289dfdc:
+          requires:
+            - NEW_A
+      - feat-9919:
+          requires:
+            - ee9ef289dfdc
+      - BACKUP_RESOURCE_PIN_43:
+          requires:
+            - ee9ef289dfdc
+      - p:
+          requires:
+            - BACKUP_RESOURCE_PIN_43
+      - SCHEMA_PORT_36:
+          requires:
+            - BACKUP_RESOURCE_PIN_43
+      - DEV_MERGE_4:
+          requires:
+            - SCHEMA_PORT_36
+      - f0rk:
+          requires:
+            - SCHEMA_PORT_36
+      - edge-v5:
+          requires:
+            - f0rk
+      - d2uv7j:
+          requires:
+            - f0rk
+      - t-3:
+          requires:
+            - d2uv7j
+      - grace-box:
+          requires:
+            - d2uv7j
+      - defualt:
+          requires:
+            - grace-box
+      - graph_loop:
+          requires:
+            - grace-box
+      - tango-9:
+          requires:
+            - graph_loop
+      - s3l3c7:
+          requires:
+            - graph_loop
+      - DEPLOY_UAT:
+          requires:
+            - s3l3c7
+      - shouldDecode:
+          requires:
+            - s3l3c7
+      - green-light:
+          requires:
+            - shouldDecode
+      - checkbox--inline:
+          requires:
+            - shouldDecode
+      - INIT_STG:
+          requires:
+            - checkbox--inline
+      - Close-TensorProperty:
+          requires:
+            - checkbox--inline
+      - helios-final:
+          requires:
+            - Close-TensorProperty
+      - strCtrl:
+          requires:
+            - Close-TensorProperty
+      - CORE-478:
+          requires:
+            - strCtrl
+      - seedkhz:
+          requires:
+            - strCtrl
+      - green-light-go:
+          requires:
+            - seedkhz
+      - IDWrapper:
+          requires:
+            - seedkhz
+      - java17-bench:
+          requires:
+            - IDWrapper
